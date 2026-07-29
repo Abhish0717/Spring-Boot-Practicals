@@ -12,59 +12,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rays.common.ORSResponse;
-import com.rays.dto.RoleDTO;
-import com.rays.form.RoleForm;
-import com.rays.service.RoleService;
+import com.rays.dto.UserDTO;
+import com.rays.form.UserForm;
+import com.rays.service.UserService;
 
 @RestController
-@RequestMapping(value = "Role")
-public class RoleCtl extends BaseCtl {
+@RequestMapping(value = "User")
+public class UserCtl extends BaseCtl {
 
 	@Autowired
-	RoleService service;
+	UserService service;
 
-//	http://localhost:8080/Role/save
 	@PostMapping("save")
-	public ORSResponse save(@RequestBody @Valid RoleForm form, BindingResult BR) {
+	public ORSResponse save(@RequestBody @Valid UserForm form, BindingResult BR) {
 		ORSResponse res = new ORSResponse();
 		res = validate(BR);
 		if (res.isSuccess() == false) {
 			return res;
-
 		}
-		RoleDTO dto = (RoleDTO) form.getDTO();
+		UserDTO dto = (UserDTO) form.getDTO();
 
 		service.save(dto);
 
-		res.addMessage("Role Added Successfully");
+		res.addMessage("User Added Successfully");
 		res.addData(dto);
 		res.setSuccess(true);
 
 		return res;
 	}
 
-//	http://localhost:8080/Role/update
 	@PostMapping("update")
-	public ORSResponse update(@RequestBody @Valid RoleForm form, BindingResult BR) {
+	public ORSResponse update(@RequestBody @Valid UserForm form, BindingResult BR) {
 		ORSResponse res = new ORSResponse();
 		res = validate(BR);
-
 		if (res.isSuccess() == false) {
 			return res;
-
 		}
-		RoleDTO dto = (RoleDTO) form.getDTO();
+		UserDTO dto = (UserDTO) form.getDTO();
 
 		service.save(dto);
 
-		res.addMessage("Role Updated Successfully");
+		res.addMessage("User Updated Successfully");
 		res.addData(dto);
 		res.setSuccess(true);
 
 		return res;
 	}
 
-//	http://localhost:8080/Role/delete/id
 	@GetMapping("delete/{ids}")
 	public ORSResponse delete(@PathVariable long[] ids) {
 
@@ -72,7 +66,7 @@ public class RoleCtl extends BaseCtl {
 
 		for (long id : ids) {
 			service.delete(id);
-			res.addMessage("Role Deleted Successfully");
+			res.addMessage("User Deleted Successfully");
 			res.setSuccess(true);
 		}
 
@@ -80,13 +74,12 @@ public class RoleCtl extends BaseCtl {
 
 	}
 
-//	http://localhost:8080/Role/get/id
 	@GetMapping("get/{id}")
 	public ORSResponse get(@PathVariable long id) {
 
 		ORSResponse res = new ORSResponse();
 
-		RoleDTO dto = service.findById(id);
+		UserDTO dto = service.findById(id);
 
 		if (dto != null) {
 			res.setSuccess(true);
