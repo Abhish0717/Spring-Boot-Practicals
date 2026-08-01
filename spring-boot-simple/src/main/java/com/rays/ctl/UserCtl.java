@@ -99,7 +99,7 @@ public class UserCtl extends BaseCtl {
 
 		ORSResponse res = new ORSResponse();
 
-		int pageSize = 5;
+		int pageSize = "page.size";
 
 		UserDTO dto = (UserDTO) form.getDTO();
 
