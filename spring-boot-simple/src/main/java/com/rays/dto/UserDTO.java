@@ -1,5 +1,7 @@
 package com.rays.dto;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -12,19 +14,22 @@ public class UserDTO extends BaseDTO {
 
 	@Column(name = "FIRSTNAME", length = 45)
 	private String firstName;
-	
+
 	@Column(name = "LASTNAME", length = 45)
 	private String lastName;
-	
+
 	@Column(name = "LOGIN", length = 45)
 	private String login;
-	
+
 	@Column(name = "PASSWORD", length = 45)
 	private String password;
-	
+
+	@Column(name = "DOB")
+	private Date dob;
+
 	@Column(name = "ROLEID")
 	private Long roleId;
-	
+
 	@Column(name = "ROLENAME", length = 45)
 	private String roleName;
 
@@ -58,6 +63,14 @@ public class UserDTO extends BaseDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
 	}
 
 	public Long getRoleId() {

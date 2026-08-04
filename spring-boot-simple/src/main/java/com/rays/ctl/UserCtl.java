@@ -27,40 +27,68 @@ public class UserCtl extends BaseCtl {
 	UserService service;
 
 	@PostMapping("save")
-	public ORSResponse save(@RequestBody @Valid UserForm form, BindingResult BR) {
-		ORSResponse res = new ORSResponse();
-		res = validate(BR);
-		if (res.isSuccess() == false) {
+	public ORSResponse save(@RequestBody @Valid UserForm form, BindingResult bindingResult) {
+		ORSResponse res = validate(bindingResult);
+		if (!res.isSuccess()) {
 			return res;
 		}
 		UserDTO dto = (UserDTO) form.getDTO();
 
-		service.save(dto);
-
-		res.addMessage("User Added Successfully");
-		res.addData(dto);
-		res.setSuccess(true);
-
-		return res;
-	}
-
-	@PostMapping("update")
-	public ORSResponse update(@RequestBody @Valid UserForm form, BindingResult BR) {
-		ORSResponse res = new ORSResponse();
-		res = validate(BR);
-		if (res.isSuccess() == false) {
-			return res;
+		try {
+			if (dto.getId() != null && dto.getId() > 0) {
+				service.update(dto);
+				res.addData(dto);
+				res.addMessage("Data Updated Successfully..!!");
+				res.setSuccess(true);
+			} else {
+				service.add(dto);
+				res.addData(dto);
+				res.addMessage("Data added Successfully..!!");
+				res.setSuccess(true);
+			}
+		} catch (Exception e) {
+			res.addMessage(e.getMessage());
+			res.setSuccess(false);
 		}
-		UserDTO dto = (UserDTO) form.getDTO();
-
-		service.save(dto);
-
-		res.addMessage("User Updated Successfully");
-		res.addData(dto);
-		res.setSuccess(true);
 
 		return res;
 	}
+
+//	@PostMapping("save")
+//	public ORSResponse save(@RequestBody @Valid UserForm form, BindingResult BR) {
+//		ORSResponse res = new ORSResponse();
+//		res = validate(BR);
+//		if (res.isSuccess() == false) {
+//			return res;
+//		}
+//		UserDTO dto = (UserDTO) form.getDTO();
+//
+//		service.save(dto);
+//
+//		res.addMessage("User Added Successfully");
+//		res.addData(dto);
+//		res.setSuccess(true);
+//
+//		return res;
+//	}
+
+//	@PostMapping("update")
+//	public ORSResponse update(@RequestBody @Valid UserForm form, BindingResult BR) {
+//		ORSResponse res = new ORSResponse();
+//		res = validate(BR);
+//		if (res.isSuccess() == false) {
+//			return res;
+//		}
+//		UserDTO dto = (UserDTO) form.getDTO();
+//
+//		service.save(dto);
+//
+//		res.addMessage("User Updated Successfully");
+//		res.addData(dto);
+//		res.setSuccess(true);
+//
+//		return res;
+//	}
 
 	@GetMapping("delete/{ids}")
 	public ORSResponse delete(@PathVariable long[] ids) {

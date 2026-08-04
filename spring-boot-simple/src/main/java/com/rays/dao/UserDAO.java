@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.rays.dto.RoleDTO;
@@ -22,12 +23,22 @@ public class UserDAO {
 	@PersistenceContext
 	EntityManager entityManager;
 
+	@Autowired
+	RoleDAO rdao;
+	
+	public void populate(UserDTO dto) {
+		RoleDTO rdto = rdao.findByPk(dto.getRoleId());
+		dto.setRoleName(rdto.getName());
+	}
+	
 	public long add(UserDTO dto) {
+		populate(dto);
 		entityManager.persist(dto);
 		return dto.getId();
 	}
 
 	public void update(UserDTO dto) {
+		populate(dto);
 		entityManager.merge(dto);
 	}
 
@@ -68,6 +79,12 @@ public class UserDAO {
 			if (dto.getLogin() != null && dto.getLogin().length() > 0) {
 				predicateList.add(builder.like(root.get("login"), dto.getLogin() + "%"));
 			}
+			if (dto.getDob() != null && dto.getDob().getTime() > 0) {
+				predicateList.add(builder.equal(root.get("dob"), dto.getDob()));
+			}
+			if (dto.getRoleId() != null && dto.getRoleId() > 0) {
+				predicateList.add(builder.equal(root.get("roleId"), dto.getRoleId()));
+			}
 			if (dto.getRoleName() != null && dto.getRoleName().length() > 0) {
 				predicateList.add(builder.like(root.get("roleName"), dto.getRoleName() + "%"));
 
@@ -85,5 +102,30 @@ public class UserDAO {
 		List<UserDTO> list = query.getResultList();
 
 		return list;
+	}
+
+	public UserDTO findByUniqueKey(String attribute, String value) {
+
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+		CriteriaQuery<UserDTO> cq = builder.createQuery(UserDTO.class);
+
+		Root<UserDTO> root = cq.from(UserDTO.class);
+
+		Predicate condition = builder.equal(root.get(attribute), value);
+
+		cq.where(condition);
+
+		TypedQuery<UserDTO> tq = entityManager.createQuery(cq);
+
+		List<UserDTO> list = tq.getResultList();
+
+		UserDTO dto = null;
+
+		if (list.size() == 1) {
+			dto = list.get(0);
+		}
+
+		return dto;
 	}
 }

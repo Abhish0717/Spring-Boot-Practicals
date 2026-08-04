@@ -5,26 +5,33 @@ import java.util.Date;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.rays.common.BaseDTO;
 import com.rays.common.BaseForm;
 import com.rays.dto.UserDTO;
 
-public class UserForm extends BaseForm {
+public class UserRegistrationForm extends BaseForm {
 
-	@NotEmpty(message = "First Name is required")
+	@NotEmpty(message = "firstName is required")
 	private String firstName;
-	@NotEmpty(message = "Last Name is required")
+
+	@NotEmpty(message = "lastName is required")
 	private String lastName;
-	@NotEmpty(message = "Login Id is required")
+
+	@NotEmpty(message = "login Id is required")
 	private String login;
-	@NotEmpty(message = "Password is required")
+
+	@NotEmpty(message = "password is required")
 	private String password;
-	@NotNull(message = "DOB is required")
+
+	@NotNull(message = "Date of birth is required")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dob;
-	@NotNull(message = "Role Id is required")
-	private Long roleId;
-	@NotEmpty(message = "Role Name is required")
-	private String roleName;
+
+	public UserRegistrationForm() {
+		
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -66,32 +73,15 @@ public class UserForm extends BaseForm {
 		this.dob = dob;
 	}
 
-	public Long getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
-	}
-
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-
 	@Override
 	public BaseDTO getDTO() {
-		UserDTO dto = (UserDTO) initDTO(new UserDTO());
+		UserDTO dto = new UserDTO();
 		dto.setFirstName(firstName);
 		dto.setLastName(lastName);
 		dto.setLogin(login);
 		dto.setPassword(password);
 		dto.setDob(dob);
-		dto.setRoleId(roleId);
-		dto.setRoleName(roleName);
+		dto.setRoleId(2L);
 		return dto;
 	}
 }
