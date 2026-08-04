@@ -23,6 +23,9 @@ import com.rays.service.RoleService;
 @RequestMapping(value = "Role")
 public class RoleCtl extends BaseCtl {
 
+	@value("${page.size}")
+    private String pageSize;
+
 	@Autowired
 	RoleService service;
 
@@ -107,7 +110,7 @@ public class RoleCtl extends BaseCtl {
 		RoleDTO dto = (RoleDTO) form.getDTO();
 		ORSResponse res = new ORSResponse();
 
-		int pageSize = 5;
+		// int pageSize = 5;
 
 		List<RoleDTO> list = service.search(dto, pageNo, pageSize);
 
