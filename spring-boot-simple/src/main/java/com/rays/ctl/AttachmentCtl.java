@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,59 +13,66 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rays.common.ORSResponse;
-import com.rays.dto.RoleDTO;
+import com.rays.dto.AttachmentDTO;
+import com.rays.form.AttachmentForm;
 import com.rays.form.RoleForm;
-import com.rays.service.RoleService;
+import com.rays.service.AttachmentService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 @RestController
-@RequestMapping(value = "Role")
-public class RoleCtl extends BaseCtl {
-
+@RequestMapping(value="Attachment") 
+public class AttachmentCtl extends BaseCtl {
 	@Autowired
-	RoleService service;
-
-//	http://localhost:8080/Role/save
+	public AttachmentService service;
+	
 	@PostMapping("save")
-	public ORSResponse save(@RequestBody @Valid RoleForm form, BindingResult BR) {
+	public ORSResponse save(@RequestBody @Valid AttachmentForm form, BindingResult bindingResult) {
+
 		ORSResponse res = new ORSResponse();
-		res = validate(BR);
+
+		res = validate(bindingResult);
+
 		if (res.isSuccess() == false) {
 			return res;
-
 		}
-		RoleDTO dto = (RoleDTO) form.getDTO();
 
-		service.save(dto);
+		AttachmentDTO dto = (AttachmentDTO) form.getDTO();
 
-		res.addMessage("Role Added Successfully");
-		res.addData(dto);
-		res.setSuccess(true);
+		Long id = service.add(dto);
+
+		if (id != null && id > 0) {
+			res.addData(dto);
+			res.addMessage("Attachment saved successfully");
+		} else {
+			res.addMessage("error in Attachment add");
+		}
 
 		return res;
-	}
 
-//	http://localhost:8080/Role/update
+	}
+	
+	
 	@PostMapping("update")
-	public ORSResponse update(@RequestBody @Valid RoleForm form, BindingResult BR) {
+	public ORSResponse update(@RequestBody @Valid RoleForm form, BindingResult bindingResult) {
 		ORSResponse res = new ORSResponse();
-		res = validate(BR);
+		res = validate(bindingResult);
 
 		if (res.isSuccess() == false) {
 			return res;
 
 		}
-		RoleDTO dto = (RoleDTO) form.getDTO();
+		AttachmentDTO dto = (AttachmentDTO) form.getDTO();
 
 		service.save(dto);
 
-		res.addMessage("Role Updated Successfully");
+		res.addMessage("Attachment Updated Successfully");
 		res.addData(dto);
 		res.setSuccess(true);
 
 		return res;
 	}
-
-//	http://localhost:8080/Role/delete/id
+	
 	@GetMapping("delete/{ids}")
 	public ORSResponse delete(@PathVariable long[] ids) {
 
@@ -75,21 +80,20 @@ public class RoleCtl extends BaseCtl {
 
 		for (long id : ids) {
 			service.delete(id);
-			res.addMessage("Role Deleted Successfully");
+			res.addMessage("Attachment Deleted Successfully");
 			res.setSuccess(true);
 		}
 
 		return res;
 
 	}
-
-//	http://localhost:8080/Role/get/id
+	
 	@GetMapping("get/{id}")
 	public ORSResponse get(@PathVariable long id) {
 
 		ORSResponse res = new ORSResponse();
 
-		RoleDTO dto = service.findById(id);
+		AttachmentDTO dto = service.findById(id);
 
 		if (dto != null) {
 			res.setSuccess(true);
@@ -99,17 +103,16 @@ public class RoleCtl extends BaseCtl {
 
 		return res;
 	}
-
-//	http://localhost:8080/Role/search/pageNo
+	
 	@RequestMapping(value = "search/{pageNo}", method = { RequestMethod.POST, RequestMethod.GET })
-	public ORSResponse search(@RequestBody RoleForm form, @PathVariable int pageNo) {
+	public ORSResponse search(@RequestBody AttachmentForm form, @PathVariable int pageNo) {
 
-		RoleDTO dto = (RoleDTO) form.getDTO();
+		AttachmentDTO dto = (AttachmentDTO) form.getDTO();
 		ORSResponse res = new ORSResponse();
 
 		int pageSize = 5;
 
-		List<RoleDTO> list = service.search(dto, pageNo, pageSize);
+		List<AttachmentDTO> list = service.search(dto, pageNo, pageSize);
 
 		if (list != null) {
 			res.addData(list);
@@ -121,4 +124,5 @@ public class RoleCtl extends BaseCtl {
 		return res;
 
 	}
+
 }
