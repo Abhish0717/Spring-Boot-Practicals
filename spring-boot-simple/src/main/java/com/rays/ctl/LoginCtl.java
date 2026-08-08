@@ -37,7 +37,7 @@ public class LoginCtl extends BaseCtl {
 		if (dto != null) {
 			session.setAttribute("user", dto);
 			res.addData(dto);
-			res.addMessage("user login successfully..!!");
+			res.addMessage("User login successfully..!!");
 			res.setSuccess(true);
 		} else {
 			res.addMessage("Login ID & Password is invalid..!!");
@@ -63,7 +63,7 @@ public class LoginCtl extends BaseCtl {
 			long pk = service.add(dto);
 
 			res.addData(dto);
-			res.addMessage("user Registered Successfully..!!");
+			res.addMessage("User Registered Successfully..!!");
 		} catch (Exception e) {
 			res.addMessage(e.getMessage());
 			res.setSuccess(false);
@@ -79,7 +79,7 @@ public class LoginCtl extends BaseCtl {
 
 		if (session.getId() != null) {
 			session.invalidate();
-			res.addMessage("user logout successfully");
+			res.addMessage("User logout successfully");
 			res.setSuccess(true);
 			return res;
 		}

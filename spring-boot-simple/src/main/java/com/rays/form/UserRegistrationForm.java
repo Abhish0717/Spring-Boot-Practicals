@@ -13,16 +13,16 @@ import com.rays.dto.UserDTO;
 
 public class UserRegistrationForm extends BaseForm {
 
-	@NotEmpty(message = "firstName is required")
+	@NotEmpty(message = "First name is required")
 	private String firstName;
 
-	@NotEmpty(message = "lastName is required")
+	@NotEmpty(message = "Last name is required")
 	private String lastName;
 
-	@NotEmpty(message = "login Id is required")
+	@NotEmpty(message = "LoginId is required")
 	private String login;
 
-	@NotEmpty(message = "password is required")
+	@NotEmpty(message = "Password is required")
 	private String password;
 
 	@NotNull(message = "Date of birth is required")

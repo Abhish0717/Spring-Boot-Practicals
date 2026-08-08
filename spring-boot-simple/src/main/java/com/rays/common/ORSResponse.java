@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ORSResponse {
 
-	public static final String INPUT_ERROR = "inpiterror";
+	public static final String INPUT_ERROR = "inputerror";
 	public static final String MESSAGE = "message";
 	public static final String DATA = "data";
 
