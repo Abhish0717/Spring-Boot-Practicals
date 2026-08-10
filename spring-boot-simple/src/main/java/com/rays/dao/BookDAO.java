@@ -39,30 +39,6 @@ public class BookDAO {
 		return dto;
 	}
 
-	public BookDTO findByUniqueKey(String attribute, String value) {
-
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-
-		CriteriaQuery<BookDTO> cq = builder.createQuery(BookDTO.class);
-
-		Root<BookDTO> root = cq.from(BookDTO.class);
-
-		Predicate condition = builder.equal(root.get(attribute), value);
-
-		cq.where(condition);
-
-		TypedQuery<BookDTO> tq = entityManager.createQuery(cq);
-
-		List<BookDTO> list = tq.getResultList();
-
-		BookDTO dto = null;
-
-		if (list.size() == 1) {
-			dto = list.get(0);
-		}
-
-		return dto;
-	}
 
 	public List<BookDTO> search(BookDTO dto, int pageNo, int pageSize) {
 
@@ -102,5 +78,30 @@ public class BookDAO {
 		return list;
 
 	}
+	
+	public BookDTO findByUniqueKey(String attribute, String value) {
+
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+		CriteriaQuery<BookDTO> cq = builder.createQuery(BookDTO.class);
+
+		Root<BookDTO> root = cq.from(BookDTO.class);
+
+		Predicate condition = builder.equal(root.get(attribute), value);
+
+		cq.where(condition);
+
+		TypedQuery<BookDTO> tq = entityManager.createQuery(cq);
+
+		List<BookDTO> list = tq.getResultList();
+
+		BookDTO dto = null;
+
+		if (list.size() == 1) {
+			dto = list.get(0);
+		}
+
+		return dto;
+	}	
 
 }

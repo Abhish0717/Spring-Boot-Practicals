@@ -13,41 +13,41 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
-import com.rays.dto.AttachmentDTO;
+import com.rays.dto.StudentDTO;
 
 @Repository
-public class AttachmentDAO {
+public class StudentDAO {
 
 	@PersistenceContext
 	public EntityManager entityManager;
 
-	public long add(AttachmentDTO dto) {
+	public long add(StudentDTO dto) {
 		entityManager.persist(dto);
 		return dto.getId();
 	}
 
-	public void update(AttachmentDTO dto) {
+	public void update(StudentDTO dto) {
 		entityManager.merge(dto);
 	}
 
-	public void delete(AttachmentDTO dto) {
+	public void delete(StudentDTO dto) {
 		entityManager.remove(dto);
 	}
 
-	public AttachmentDTO findByPk(long pk) {
-		AttachmentDTO dto = entityManager.find(AttachmentDTO.class, pk);
+	public StudentDTO findByPk(long pk) {
+		StudentDTO dto = entityManager.find(StudentDTO.class, pk);
 		return dto;
 	}
 
-	public List<AttachmentDTO> search(AttachmentDTO dto, int pageNo, int pageSize) {
+	public List<StudentDTO> search(StudentDTO dto, int pageNo, int pageSize) {
 
-		List<AttachmentDTO> list = new ArrayList<>();
+		List<StudentDTO> list = new ArrayList<>();
 
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder(); // getCriteriabuilder method to find data by pk
 
-		CriteriaQuery<AttachmentDTO> cq = builder.createQuery(AttachmentDTO.class);
+		CriteriaQuery<StudentDTO> cq = builder.createQuery(StudentDTO.class);
 
-		Root<AttachmentDTO> qRoot = cq.from(AttachmentDTO.class);
+		Root<StudentDTO> qRoot = cq.from(StudentDTO.class);
 
 		List<Predicate> predicateList = new ArrayList<Predicate>();
 
@@ -55,17 +55,20 @@ public class AttachmentDAO {
 			if (dto.getName() != null && dto.getName().length() > 0) {
 				predicateList.add(builder.like(qRoot.get("name"), dto.getName() + "%"));
 			}
-			if (dto.getDescription() != null && dto.getDescription().length() > 0) {
-				predicateList.add(builder.like(qRoot.get("description"), dto.getDescription() + "%"));
+			if (dto.getEmail() != null && dto.getEmail().length() > 0) {
+				predicateList.add(builder.like(qRoot.get("email"), dto.getEmail() + "%"));
 			}
-			if (dto.getType() != null && dto.getType().length() > 0) {
-				predicateList.add(builder.like(qRoot.get("type"), dto.getType() + "%"));
+			if (dto.getMobileNo() != null && dto.getMobileNo().length() > 0) {
+				predicateList.add(builder.like(qRoot.get("mobileNo"), dto.getMobileNo() + "%"));
+			}
+			if (dto.getCourse() != null && dto.getCourse().length() > 0) {
+				predicateList.add(builder.like(qRoot.get("course"), dto.getCourse() + "%"));
 			}
 		}
 
 		cq.where(predicateList.toArray(new Predicate[predicateList.size()]));
 
-		TypedQuery<AttachmentDTO> typedQuery = entityManager.createQuery(cq);
+		TypedQuery<StudentDTO> typedQuery = entityManager.createQuery(cq);
 
 		if (pageSize > 0) {
 			typedQuery.setFirstResult(pageNo * pageSize);
@@ -77,24 +80,24 @@ public class AttachmentDAO {
 		return list;
 
 	}
-
-	public AttachmentDTO findByUniqueKey(String attribute, String value) {
+	
+	public StudentDTO findByUniqueKey(String attribute, String value) {
 
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-		CriteriaQuery<AttachmentDTO> cq = builder.createQuery(AttachmentDTO.class);
+		CriteriaQuery<StudentDTO> cq = builder.createQuery(StudentDTO.class);
 
-		Root<AttachmentDTO> root = cq.from(AttachmentDTO.class);
+		Root<StudentDTO> root = cq.from(StudentDTO.class);
 
 		Predicate condition = builder.equal(root.get(attribute), value);
 
 		cq.where(condition);
 
-		TypedQuery<AttachmentDTO> tq = entityManager.createQuery(cq);
+		TypedQuery<StudentDTO> tq = entityManager.createQuery(cq);
 
-		List<AttachmentDTO> list = tq.getResultList();
+		List<StudentDTO> list = tq.getResultList();
 
-		AttachmentDTO dto = null;
+		StudentDTO dto = null;
 
 		if (list.size() == 1) {
 			dto = list.get(0);

@@ -1,9 +1,6 @@
 package com.rays.form;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import com.rays.common.BaseDTO;
 import com.rays.common.BaseForm;
@@ -14,7 +11,7 @@ public class AttachmentForm extends BaseForm {
 	@NotEmpty(message = " name is required")
 	private String name;
 
-	@NotNull(message = "type is required")
+	@NotEmpty(message = "type is required")
 	private String type;
 
 	@NotEmpty(message = " description is required")
