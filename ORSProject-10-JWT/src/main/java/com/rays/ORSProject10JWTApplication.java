@@ -16,16 +16,16 @@ public class ORSProject10JWTApplication {
 
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfig() {
-		WebMvcConfigurer w = new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				CorsRegistration cors = registry.addMapping("/**").allowedOrigins("http://localhost:4200")
-						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*")
-						.allowCredentials(true);
-			}
-		};
-		return w;
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfig() {
+//		WebMvcConfigurer w = new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				CorsRegistration cors = registry.addMapping("/**").allowedOrigins("http://localhost:4200")
+//						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*")
+//						.allowCredentials(true);
+//			}
+//		};
+//		return w;
+//	}
 }
