@@ -99,7 +99,7 @@ public class JWTUtil {
 	// -------------------------
 	private boolean isTokenExpired(String payloadJson) {
 		long exp = Long.parseLong(extractField(payloadJson, "exp"));
-		return exp < (System.currentTimeMillis() / 1000);
+		return exp < (System.currentTimeMillis());
 	}
 
 	private String extractField(String json, String field) {
