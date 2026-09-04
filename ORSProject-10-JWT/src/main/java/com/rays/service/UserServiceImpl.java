@@ -2,7 +2,9 @@ package com.rays.service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,10 +12,15 @@ import com.rays.common.BaseServiceImpl;
 import com.rays.common.UserContext;
 import com.rays.dao.UserDAOInt;
 import com.rays.dto.UserDTO;
+import com.rays.email.EmailBuilder;
+import com.rays.email.EmailMessage;
+import com.rays.email.EmailServiceInt;
 
 @Service
 @Transactional
 public class UserServiceImpl extends BaseServiceImpl<UserDTO, UserDAOInt> implements UserServiceInt {
+	@Autowired
+	private EmailServiceInt emailservice;
 
 	@Transactional(readOnly = true)
 	public UserDTO findByLogin(String login, UserContext userContext) {
@@ -24,7 +31,20 @@ public class UserServiceImpl extends BaseServiceImpl<UserDTO, UserDAOInt> implem
 	public UserDTO register(UserDTO dto, UserContext userContext) {
 
 		Long id = add(dto, userContext);
+		baseDao.add(dto, userContext);
 
+		HashMap<String, String> map = new HashMap<>();
+		map.put("login", dto.getLogin());
+		map.put("password", dto.getPassword());
+		map.put("firstName", dto.getFirstName());
+
+		EmailMessage msg = new EmailMessage();
+		msg.setTo(dto.getLogin());
+		msg.setSubject("User Registration Successful");
+		msg.setMessage(EmailBuilder.getUserRegistrationMessage(map));
+		msg.setMessageType(EmailMessage.HTML_MSG);
+
+		emailservice.sendMail(msg);
 		dto.setId(id);
 
 		return dto;
