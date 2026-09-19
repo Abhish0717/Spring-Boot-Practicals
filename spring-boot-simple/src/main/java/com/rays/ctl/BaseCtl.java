@@ -7,9 +7,14 @@ import java.util.Map;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.rays.common.BaseDTO;
+import com.rays.common.BaseForm;
+import com.rays.common.BaseServiceInt;
 import com.rays.common.ORSResponse;
 
-public class BaseCtl {
+
+public class BaseCtl<F extends BaseForm, T extends BaseDTO, S extends BaseServiceInt<T>> {
+
 
 	public ORSResponse validate(BindingResult BR) {
 
